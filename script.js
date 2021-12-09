@@ -36,9 +36,8 @@ function loadLabeledImages() {
   return Promise.all(
     labels.map(async label => {
       const descriptions = [];
-      for (let i = 1; i <= 2; i++) {
-        //TODO change
-        const imgUrl = `https://raw.githubusercontent.com/ImAvinashSharma/abhi-chu/main/labeled_images/${label}/${i}.jpg`;
+      for (let i = 1; i <= 4; i++) {
+        const imgUrl = `https://raw.githubusercontent.com/abhi6647/MiniPro/main/labeled_images/${label}/${i}.jpg`;
         const img = await faceapi.fetchImage(imgUrl);
         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
         descriptions.push(detections.descriptor);
