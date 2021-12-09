@@ -24,6 +24,8 @@ async function start() {
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
     const results = resizedDetections.map(d => faceMatcher.findBestMatch(d.descriptor));
     results.forEach((result, i) => {
+      console.log(result.toString());
+      sendSMS("9100206547", "Child" + result.toString() + " is present.");
       const box = resizedDetections[i].detection.box;
       const drawBox = new faceapi.draw.DrawBox(box, { label: result.toString() });
       drawBox.draw(canvas);
@@ -42,8 +44,27 @@ function loadLabeledImages() {
         const detections = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
         descriptions.push(detections.descriptor);
       }
-
       return new faceapi.LabeledFaceDescriptors(label, descriptions);
     })
   );
+}
+
+function sendSMS(phone, message) {
+  user = {
+    phone,
+    message
+  };
+  let options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json;charset=utf-8"
+    },
+    body: JSON.stringify(user)
+  };
+  let fetchRes = fetch("https://ElementaryLimegreenPublishers.abhi6647.repl.co/sms", options);
+  fetchRes
+    .then(res => res.json())
+    .then(d => {
+      console.log(d);
+    });
 }
